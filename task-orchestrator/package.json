@@ -1,0 +1,20 @@
+{
+  "name": "task-orchestrator",
+  "version": "1.0.0",
+  "description": "MCP server para orquestração de tarefas e integração com outros servidores",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "@types/winston": "^2.4.4",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}

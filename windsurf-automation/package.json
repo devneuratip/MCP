@@ -1,0 +1,20 @@
+{
+  "name": "windsurf-automation",
+  "version": "1.0.0",
+  "description": "MCP server para automação de interações com o Windsurf Editor",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.1",
+    "puppeteer": "^21.0.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/puppeteer": "^7.0.4",
+    "typescript": "^5.3.3"
+  }
+}

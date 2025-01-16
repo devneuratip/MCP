@@ -1,0 +1,36 @@
+{
+  "name": "adaptive-learning",
+  "version": "1.0.0",
+  "description": "MCP server para aprendizado adaptativo e melhoria contínua",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "start": "node build/index.js",
+    "train": "node build/training/train.js",
+    "optimize": "node build/optimization/optimize.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "axios": "^1.6.5",
+    "brain.js": "1.6.1",
+    "ml-matrix": "^6.11.0",
+    "ml-regression": "^5.0.0",
+    "nanoid": "^3.3.7",
+    "natural": "^6.10.0",
+    "node-cache": "^5.1.2",
+    "node-nlp": "^4.27.0",
+    "redis": "^4.6.12",
+    "winston": "^3.11.0",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/natural": "^5.1.5",
+    "@types/node": "^20.0.0",
+    "@types/node-cache": "^4.2.5",
+    "@types/redis": "^4.0.11",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

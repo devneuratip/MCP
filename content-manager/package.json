@@ -1,0 +1,25 @@
+{
+  "name": "content-manager",
+  "version": "1.0.0",
+  "description": "MCP server para gerenciamento e geração de conteúdo e mídia",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "generate": "node build/generator/generate.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    "openai": "^4.24.1",
+    "yaml": "^2.3.4",
+    "nanoid": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

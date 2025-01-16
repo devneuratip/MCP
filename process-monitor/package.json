@@ -1,0 +1,23 @@
+{
+  "name": "process-monitor",
+  "version": "1.0.0",
+  "description": "Process monitor server for checking system processes and ports status",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["mcp", "process", "monitor"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0",
+    "@types/node": "^20.0.0",
+    "find-process": "^1.4.7",
+    "ps-list": "^8.1.1",
+    "typescript": "^5.0.0"
+  }
+}

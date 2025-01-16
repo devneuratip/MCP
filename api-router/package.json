@@ -1,0 +1,23 @@
+{
+  "name": "@modelcontextprotocol/api-router",
+  "version": "1.0.0",
+  "description": "API Router for managing multiple API keys and providers",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "ts-node-esm src/index.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.1.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}

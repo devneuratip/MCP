@@ -1,0 +1,21 @@
+{
+  "name": "health-monitor",
+  "version": "1.0.0",
+  "description": "MCP server para monitoramento de saúde do sistema",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "systeminformation": "^5.21.22",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

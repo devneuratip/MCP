@@ -1,0 +1,26 @@
+{
+  "name": "security-scanner",
+  "version": "1.0.0",
+  "description": "MCP server para scanner de segurança",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    "snyk": "^1.1240.0",
+    "dependency-check": "^4.1.0",
+    "audit-ci": "^6.6.1",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

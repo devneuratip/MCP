@@ -1,0 +1,26 @@
+{
+  "name": "chatbot-manager",
+  "version": "1.0.0",
+  "description": "MCP server para gerenciamento de chatbots e processamento de linguagem natural",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    "openai": "^4.24.1",
+    "cohere-ai": "^7.6.2",
+    "axios": "^1.6.5",
+    "nanoid": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "@types/node-cache": "^4.2.5",
+    "typescript": "^5.3.3"
+  }
+}

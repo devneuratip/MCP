@@ -1,0 +1,36 @@
+{
+  "name": "integration-hub",
+  "version": "1.0.0",
+  "description": "MCP server para automação e integrações de sistemas",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    
+    "stripe": "^14.10.0",
+    "mercadopago": "^2.0.6",
+    
+    "whatsapp-web.js": "^1.23.0",
+    "nodemailer": "^6.9.7",
+    
+    "bull": "^4.12.0",
+    "redis": "^4.6.12",
+    
+    "axios": "^1.6.5",
+    "nanoid": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "@types/node-cache": "^4.2.5",
+    "@types/nodemailer": "^6.4.14",
+    "@types/bull": "^4.10.0",
+    "typescript": "^5.3.3"
+  }
+}

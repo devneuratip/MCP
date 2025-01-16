@@ -1,0 +1,26 @@
+{
+  "name": "rollback-system",
+  "version": "1.0.0",
+  "description": "MCP server para sistema de rollback",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    "fs-extra": "^11.2.0",
+    "diff": "^5.1.0",
+    "simple-git": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/diff": "^5.0.9",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

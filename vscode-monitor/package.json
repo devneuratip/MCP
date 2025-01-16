@@ -1,0 +1,22 @@
+{
+  "name": "vscode-monitor",
+  "version": "1.0.0",
+  "description": "MCP server para monitoramento e diagnóstico do VSCode",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "screenshot-desktop": "^1.15.0",
+    "systeminformation": "^5.21.22",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/screenshot-desktop": "^1.12.3",
+    "typescript": "^5.3.3"
+  }
+}

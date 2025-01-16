@@ -1,0 +1,24 @@
+{
+  "name": "ci-cd-pipeline",
+  "version": "1.0.0",
+  "description": "MCP server for CI/CD pipeline management",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "axios": "^1.6.5",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/winston": "^2.4.4",
+    "@types/node-cache": "^4.2.5",
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "retry-system",
+  "version": "1.0.0",
+  "description": "MCP server para sistema de retentativas",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "winston": "^3.11.0",
+    "node-cache": "^5.1.2",
+    "retry": "^0.13.1",
+    "p-retry": "^6.1.0",
+    "p-timeout": "^6.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/retry": "^0.12.5",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

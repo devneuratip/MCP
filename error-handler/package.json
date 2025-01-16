@@ -1,0 +1,23 @@
+{
+  "name": "error-handler",
+  "version": "1.0.0",
+  "description": "MCP server para gerenciamento de erros",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "axios": "^1.6.5",
+    "winston": "^3.11.0",
+    "stack-trace": "^1.0.0-pre1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/stack-trace": "^0.0.32",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}

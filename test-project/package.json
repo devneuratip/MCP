@@ -1,0 +1,19 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Projeto de teste para deploy no Vercel"
+}
