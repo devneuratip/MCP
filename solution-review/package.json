@@ -1,0 +1,20 @@
+{
+  "name": "solution-review",
+  "version": "1.0.0",
+  "description": "MCP server for solution reviews and analysis",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/winston": "^2.4.4",
+    "typescript": "^5.3.3"
+  }
+}
