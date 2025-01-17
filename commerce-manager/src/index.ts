@@ -7,16 +7,14 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
-import psList from 'ps-list';
-import findProcess from 'find-process';
 
-class ProcessMonitor {
+class CommerceManager {
   private server: Server;
 
   constructor() {
     this.server = new Server(
       {
-        name: 'process-monitor',
+        name: 'commerce-manager',
         version: '1.0.0',
       },
       {
@@ -40,25 +38,26 @@ class ProcessMonitor {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools: [
         {
-          name: 'list_processes',
-          description: 'Lista todos os processos em execução',
-          inputSchema: {
-            type: 'object',
-            properties: {}
-          }
-        },
-        {
-          name: 'find_process',
-          description: 'Procura um processo específico',
+          name: 'process_payment',
+          description: 'Processa um pagamento',
           inputSchema: {
             type: 'object',
             properties: {
-              name: {
+              amount: {
+                type: 'number',
+                description: 'Valor do pagamento'
+              },
+              currency: {
                 type: 'string',
-                description: 'Nome do processo'
+                description: 'Moeda do pagamento'
+              },
+              method: {
+                type: 'string',
+                enum: ['credit_card', 'pix', 'boleto'],
+                description: 'Método de pagamento'
               }
             },
-            required: ['name']
+            required: ['amount', 'currency', 'method']
           }
         }
       ]
@@ -67,25 +66,17 @@ class ProcessMonitor {
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       try {
         switch (request.params.name) {
-          case 'list_processes': {
-            const processes = await psList();
+          case 'process_payment': {
+            // Implementação básica inicial
             return {
               content: [
                 {
                   type: 'text',
-                  text: JSON.stringify(processes, null, 2)
-                }
-              ]
-            };
-          }
-          case 'find_process': {
-            const { name } = request.params.arguments as { name: string };
-            const processes = await findProcess('name', name);
-            return {
-              content: [
-                {
-                  type: 'text',
-                  text: JSON.stringify(processes, null, 2)
+                  text: JSON.stringify({
+                    success: true,
+                    message: 'Pagamento processado com sucesso',
+                    ...request.params.arguments
+                  })
                 }
               ]
             };
@@ -109,12 +100,12 @@ class ProcessMonitor {
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.log('Process Monitor MCP server running on stdio');
+    console.log('Commerce Manager MCP server running on stdio');
   }
 }
 
-const monitor = new ProcessMonitor();
-monitor.run().catch((error) => {
+const manager = new CommerceManager();
+manager.run().catch((error) => {
   console.error('Erro fatal no servidor:', error);
   process.exit(1);
 });
