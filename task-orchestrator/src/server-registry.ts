@@ -68,8 +68,19 @@ export class ServerRegistry {
   }
 
   public getServersByCapability(capability: string): IServerConnection[] {
+    // Procura por capabilities com e sem o prefixo "tool:"
+    const searchCapabilities = [
+      capability,
+      `tool:${capability}`,
+      capability.replace('tool:', '')
+    ];
+
     return Array.from(this.servers.values())
-      .filter(server => server.capabilities.includes(capability));
+      .filter(server => 
+        server.capabilities.some(cap => 
+          searchCapabilities.includes(cap)
+        )
+      );
   }
 
   private async fetchServerCapabilities(server: Server): Promise<string[]> {
@@ -79,7 +90,9 @@ export class ServerRegistry {
       const toolsResponse = await this.makeRequest<McpToolsResponse>(server, 'listTools');
       if (toolsResponse?.tools) {
         toolsResponse.tools.forEach(tool => {
+          // Adiciona tanto com prefixo quanto sem
           capabilities.push(`tool:${tool.name}`);
+          capabilities.push(tool.name);
         });
       }
     } catch (error) {
@@ -111,7 +124,6 @@ export class ServerRegistry {
         params: { _meta: {} }
       };
 
-      // Usando any temporariamente para contornar as limitações do tipo
       const response = await (server as any).request(schema, schema) as McpResponse;
 
       if (response?.content?.[0]?.text) {
@@ -128,7 +140,6 @@ export class ServerRegistry {
 
   private async checkServerHealth(connection: IServerConnection): Promise<IHealthCheck> {
     try {
-      // Usar health-monitor MCP server para verificar saúde
       const healthCheck: IHealthCheck = {
         status: HealthStatus.HEALTHY,
         timestamp: new Date(),
@@ -139,7 +150,6 @@ export class ServerRegistry {
         }
       };
 
-      // Atualizar status do servidor
       connection.status = ServerStatus.CONNECTED;
       connection.lastHealthCheck = healthCheck.timestamp;
 

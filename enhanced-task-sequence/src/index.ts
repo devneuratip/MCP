@@ -9,49 +9,8 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import winston from 'winston';
 import chalk from 'chalk';
-
-// Interfaces
-interface TaskConfig {
-  maxApiCost: number;
-  autonomyLevel: 'full' | 'semi' | 'minimal';
-  fallbackEnabled: boolean;
-  retryAttempts: number;
-}
-
-interface Task {
-  id: string;
-  description: string;
-  completed: boolean;
-  createdAt: string;
-  apiCost: number;
-  fallbackStrategies: string[];
-  decisions: Array<{ decision: string; reason: string }>;
-  index: number;
-  totalTasks: number;
-  remainingApiCost: number;
-  thoughts?: ThoughtData[];
-}
-
-interface ThoughtData {
-  thought: string;
-  thoughtNumber: number;
-  totalThoughts: number;
-  isRevision?: boolean;
-  revisesThought?: number;
-  branchFromThought?: number;
-  branchId?: string;
-  needsMoreThoughts?: boolean;
-  nextThoughtNeeded: boolean;
-}
-
-interface TaskSequence {
-  id: string;
-  name: string;
-  tasks: Task[];
-  config: TaskConfig;
-  currentTaskIndex: number;
-  branches: Record<string, ThoughtData[]>;
-}
+import { TaskConfig, Task, ThoughtData, TaskSequence } from './types.js';
+import { SuggestionManager } from './suggestion-manager.js';
 
 // Configuração do logger
 const logger = winston.createLogger({
@@ -80,6 +39,7 @@ const logger = winston.createLogger({
 class EnhancedTaskSequenceServer {
   private server: Server;
   private sequences: Map<string, TaskSequence> = new Map();
+  private suggestionManager: SuggestionManager;
 
   constructor() {
     this.server = new Server(
@@ -94,6 +54,7 @@ class EnhancedTaskSequenceServer {
       }
     );
 
+    this.suggestionManager = new SuggestionManager('o1');
     this.setupToolHandlers();
     this.server.onerror = (error: Error) => logger.error('MCP Error:', error);
   }
@@ -246,7 +207,7 @@ class EnhancedTaskSequenceServer {
   }
 
   private formatThought(thoughtData: ThoughtData): string {
-    const { thoughtNumber, totalThoughts, thought, isRevision, revisesThought, branchFromThought, branchId } = thoughtData;
+    const { thoughtNumber, totalThoughts, thought, isRevision, revisesThought, branchFromThought, branchId, suggestions } = thoughtData;
 
     let prefix = '';
     let context = '';
@@ -264,13 +225,21 @@ class EnhancedTaskSequenceServer {
 
     const header = `${prefix} ${thoughtNumber}/${totalThoughts}${context}`;
     const border = '─'.repeat(Math.max(header.length, thought.length) + 4);
-
-    return `
+    let output = `
 ┌${border}┐
 │ ${header} │
 ├${border}┤
-│ ${thought.padEnd(border.length - 2)} │
-└${border}┘`;
+│ ${thought.padEnd(border.length - 2)} │`;
+
+    if (suggestions && suggestions.length > 0) {
+      output += `\n├${border}┤\n│ 💡 Suggestions: │\n`;
+      suggestions.forEach(suggestion => {
+        output += `│ • ${suggestion.type.toUpperCase()}: ${suggestion.description} │\n`;
+      });
+    }
+
+    output += `└${border}┘`;
+    return output;
   }
 
   private async handleAddTaskSequence(args: any) {
@@ -314,9 +283,15 @@ class EnhancedTaskSequenceServer {
             type: 'text',
             text: JSON.stringify({
               message: 'Sequência de tarefas criada com sucesso',
-              sequenceId,
-              totalTasks: tasks.length,
-              config: sequence.config
+              sequence: {
+                id: sequenceId,
+                name: sequence.name,
+                tasks: sequence.tasks,
+                config: sequence.config,
+                currentTaskIndex: sequence.currentTaskIndex,
+                branches: sequence.branches
+              },
+              review: null
             }, null, 2)
           }
         ]
@@ -352,6 +327,17 @@ class EnhancedTaskSequenceServer {
         branchId: args.branchId
       };
 
+      // Gerar sugestões usando o SuggestionManager
+      const suggestions = this.suggestionManager.generateSuggestions({
+        thought: args.thought,
+        thoughtNumber: args.thoughtNumber,
+        totalThoughts: args.totalThoughts,
+        isRevision: args.isRevision,
+        revisesThought: args.revisesThought
+      });
+
+      thought.suggestions = suggestions;
+
       if (!currentTask.thoughts) {
         currentTask.thoughts = [];
       }
@@ -371,7 +357,8 @@ class EnhancedTaskSequenceServer {
         taskId: currentTask.id,
         thoughtNumber: thought.thoughtNumber,
         isRevision: thought.isRevision,
-        branchId: thought.branchId
+        branchId: thought.branchId,
+        suggestionCount: suggestions.length
       });
 
       return {
@@ -379,11 +366,22 @@ class EnhancedTaskSequenceServer {
           {
             type: 'text',
             text: JSON.stringify({
-              thoughtNumber: thought.thoughtNumber,
-              totalThoughts: thought.totalThoughts,
-              nextThoughtNeeded: thought.nextThoughtNeeded,
-              branches: Object.keys(currentSequence.branches),
-              thoughtCount: currentTask.thoughts.length
+              thought: {
+                thought: args.thought,
+                thoughtNumber: args.thoughtNumber,
+                totalThoughts: args.totalThoughts,
+                nextThoughtNeeded: args.nextThoughtNeeded,
+                isRevision: args.isRevision,
+                revisesThought: args.revisesThought,
+                branchFromThought: args.branchFromThought,
+                branchId: args.branchId,
+                profile: {
+                  name: 'o1',
+                  type: 'roo_cline_profile'
+                },
+                suggestions
+              },
+              suggestions
             }, null, 2)
           }
         ]
