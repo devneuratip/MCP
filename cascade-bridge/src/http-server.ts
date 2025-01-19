@@ -204,7 +204,7 @@ export class HttpServer {
     });
 
     // Endpoint para listar todos os chats
-    this.router.get('/chats', (req: express.Request, res: express.Response) => {
+    this.router.get('/chats', (_req: express.Request, res: express.Response) => {
       try {
         const chats = this.chatManager.listChats();
         res.json({ chats });
@@ -215,7 +215,7 @@ export class HttpServer {
     });
 
     // Endpoint para obter status da conexão
-    this.router.get('/status', (req: express.Request, res: express.Response) => {
+    this.router.get('/status', (_req: express.Request, res: express.Response) => {
       try {
         const status = {
           type: this.connectionManager.getConnectionType(),
