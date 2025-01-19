@@ -7,6 +7,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { ProviderFactory } from './providers/factory.js';
 import { DeployConfig } from './providers/interface.js';
+import { KnowledgeBase } from './docs/knowledge-base.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 config({ path: resolve(__dirname, '../.env') });
@@ -14,9 +15,11 @@ config({ path: resolve(__dirname, '../.env') });
 class DeployServer {
     private server: Server;
     private provider: any;
+    private knowledgeBase: KnowledgeBase;
 
     constructor(providerType: string = 'vercel') {
         this.provider = ProviderFactory.create(providerType);
+        this.knowledgeBase = KnowledgeBase.getInstance();
 
         this.server = new Server({
             name: 'deploy-server',
@@ -28,10 +31,10 @@ class DeployServer {
         });
 
         this.setupToolHandlers();
-        this.server.onerror = (error) => console.error('MCP Error:', error);
+        this.server.onerror = (error: Error): void => this.handleError(error);
     }
 
-    private setupToolHandlers() {
+    private setupToolHandlers(): void {
         this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
             tools: [
                 {
@@ -68,35 +71,39 @@ class DeployServer {
                     },
                 },
                 {
-                    name: 'validate_project',
-                    description: 'Validate project structure and configuration',
+                    name: 'search_docs',
+                    description: 'Search deployment documentation',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            projectPath: {
+                            query: {
                                 type: 'string',
-                                description: 'Path to project directory',
+                                description: 'Search query',
                             },
                         },
-                        required: ['projectPath'],
+                        required: ['query'],
                     },
                 },
                 {
-                    name: 'generate_config',
-                    description: 'Generate deployment configuration',
+                    name: 'get_deployment_guide',
+                    description: 'Get deployment guide',
+                    inputSchema: {
+                        type: 'object',
+                        properties: {},
+                    },
+                },
+                {
+                    name: 'get_template_info',
+                    description: 'Get template information',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            projectPath: {
+                            templateType: {
                                 type: 'string',
-                                description: 'Path to project directory',
-                            },
-                            framework: {
-                                type: 'string',
-                                description: 'Framework being used',
+                                description: 'Type of template (e.g., next, app-router)',
                             },
                         },
-                        required: ['projectPath', 'framework'],
+                        required: ['templateType'],
                     },
                 },
             ],
@@ -115,6 +122,12 @@ class DeployServer {
                     return await this.handleValidate(args);
                 case 'generate_config':
                     return await this.handleGenerateConfig(args);
+                case 'search_docs':
+                    return await this.handleSearchDocs(args);
+                case 'get_deployment_guide':
+                    return await this.handleGetDeploymentGuide();
+                case 'get_template_info':
+                    return await this.handleGetTemplateInfo(args);
                 default:
                     throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${request.params.name}`);
             }
@@ -180,7 +193,88 @@ class DeployServer {
         }
     }
 
-    async run() {
+    private async handleSearchDocs(args: any) {
+        const { query } = args;
+        try {
+            const results = await this.knowledgeBase.searchDocs(query);
+            return {
+                content: [{
+                    type: 'text',
+                    text: JSON.stringify(results, null, 2),
+                }],
+            };
+        } catch (error) {
+            throw new McpError(
+                ErrorCode.InternalError,
+                `Documentation search failed: ${error instanceof Error ? error.message : String(error)}`
+            );
+        }
+    }
+
+    private async handleGetDeploymentGuide() {
+        try {
+            const guide = await this.knowledgeBase.getDeploymentGuide();
+            if (!guide) {
+                throw new McpError(ErrorCode.InvalidRequest, 'Deployment guide not found');
+            }
+            return {
+                content: [{
+                    type: 'text',
+                    text: guide,
+                }],
+            };
+        } catch (error) {
+            throw new McpError(
+                ErrorCode.InternalError,
+                `Failed to get deployment guide: ${error instanceof Error ? error.message : String(error)}`
+            );
+        }
+    }
+
+    private async handleGetTemplateInfo(args: any) {
+        const { templateType } = args;
+        try {
+            const templates = await this.knowledgeBase.getTemplateInfo(templateType);
+            return {
+                content: [{
+                    type: 'text',
+                    text: JSON.stringify(templates, null, 2),
+                }],
+            };
+        } catch (error) {
+            throw new McpError(
+                ErrorCode.InternalError,
+                `Failed to get template info: ${error instanceof Error ? error.message : String(error)}`
+            );
+        }
+    }
+
+    private async handleReportError(args: { error: Error; context?: any }): Promise<any> {
+        try {
+            const response = await fetch('http://localhost:3000/report-error', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(args),
+            });
+            return response.ok;
+        } catch {
+            // Silently fail if error reporting fails
+            return false;
+        }
+    }
+
+    private handleError(error: Error): void {
+        console.error('Server error:', error);
+        void this.handleReportError({
+            error,
+            context: {
+                component: 'deploy-server',
+                internal: true,
+            },
+        });
+    }
+
+    async run(): Promise<void> {
         const transport = new StdioServerTransport();
         await this.server.connect(transport);
         console.log('Deploy Server running on stdio');
@@ -188,7 +282,7 @@ class DeployServer {
 }
 
 const server = new DeployServer();
-server.run().catch((error) => {
+void server.run().catch((error: Error) => {
     console.error('Fatal error:', error);
     process.exit(1);
 });
