@@ -1,0 +1,68 @@
+{
+  "agents": [
+    {
+      "id": "backend-agent",
+      "name": "Backend Development Agent",
+      "type": "backend",
+      "capabilities": ["node", "api", "database"],
+      "priority": 1,
+      "contextTriggers": ["backend", "api", "database"]
+    },
+    {
+      "id": "code-reviewer",
+      "name": "Code Review Agent",
+      "type": "code-reviewer",
+      "capabilities": ["code-review", "best-practices", "security"],
+      "priority": 2,
+      "contextTriggers": ["review", "quality", "security"]
+    },
+    {
+      "id": "designer-agent",
+      "name": "UX/UI Design Agent",
+      "type": "designer",
+      "capabilities": ["ui", "ux", "design-patterns"],
+      "priority": 1,
+      "contextTriggers": ["design", "ui", "ux"]
+    },
+    {
+      "id": "frontend-agent",
+      "name": "Frontend Development Agent",
+      "type": "frontend",
+      "capabilities": ["react", "web", "responsive"],
+      "priority": 1,
+      "contextTriggers": ["frontend", "web", "ui"]
+    },
+    {
+      "id": "infrastructure-agent",
+      "name": "Infrastructure Agent",
+      "type": "infrastructure",
+      "capabilities": ["devops", "vercel", "deployment"],
+      "priority": 2,
+      "contextTriggers": ["deploy", "infrastructure", "devops"]
+    },
+    {
+      "id": "lead-agent",
+      "name": "Lead Development Agent",
+      "type": "lead",
+      "capabilities": ["architecture", "planning", "coordination"],
+      "priority": 3,
+      "contextTriggers": ["architecture", "planning", "coordination"]
+    },
+    {
+      "id": "learning-agent",
+      "name": "Machine Learning Agent",
+      "type": "learning",
+      "capabilities": ["ml", "optimization", "analytics"],
+      "priority": 1,
+      "contextTriggers": ["learning", "optimization", "analytics"]
+    },
+    {
+      "id": "rag-specialist",
+      "name": "RAG Specialist Agent",
+      "type": "rag-specialist",
+      "capabilities": ["rag", "knowledge-base", "documentation"],
+      "priority": 2,
+      "contextTriggers": ["documentation", "knowledge", "search"]
+    }
+  ]
+}

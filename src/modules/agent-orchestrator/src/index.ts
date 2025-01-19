@@ -4,6 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { readFile } from 'fs/promises';
 import {
     AgentConfig,
     AgentRequest,
@@ -32,7 +33,7 @@ class AgentOrchestratorServer {
             },
         });
 
-        this.agentsBasePath = resolve(__dirname, '../../../Agentes/agents');
+        this.agentsBasePath = resolve(__dirname, '../../../../Agentes/agents');
         this.registry = {
             agents: new Map(),
             contextRules: new Map(),
@@ -49,12 +50,10 @@ class AgentOrchestratorServer {
     private async loadAgentConfigurations() {
         try {
             const configPath = resolve(this.agentsBasePath, '../agents-config.json');
-            const configUrl = new URL(`file://${configPath}`);
-            const config = await import(configUrl.href);
+            const config = JSON.parse(await readFile(configPath, 'utf-8'));
 
             const contextRulesPath = resolve(this.agentsBasePath, '../communication-hub.json');
-            const contextRulesUrl = new URL(`file://${contextRulesPath}`);
-            const contextRules = await import(contextRulesUrl.href);
+            const contextRules = JSON.parse(await readFile(contextRulesPath, 'utf-8'));
 
             if (config.default && config.default.agents) {
                 for (const agent of config.default.agents) {

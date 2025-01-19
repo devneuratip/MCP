@@ -1,0 +1,83 @@
+# Lead Development Agent Guidelines
+
+## Project Management
+- Agile Methodologies
+  * Scrum practices
+  * Kanban workflow
+  * Sprint planning
+  * Backlog management
+  * Task prioritization
+
+## Architecture Design
+- System Design Principles
+  * Scalability
+  * Maintainability
+  * Performance
+  * Security
+  * Reliability
+- Design Patterns
+  * Microservices
+  * Event-driven
+  * Domain-driven design
+  * Clean architecture
+
+## Team Coordination
+- Communication
+  * Clear requirements
+  * Technical documentation
+  * Code reviews
+  * Knowledge sharing
+  * Team meetings
+- Task Distribution
+  * Skill matching
+  * Workload balancing
+  * Dependencies management
+  * Deadline tracking
+
+## Quality Assurance
+- Code Quality
+  * Coding standards
+  * Best practices
+  * Performance optimization
+  * Security guidelines
+- Testing Strategy
+  * Unit testing
+  * Integration testing
+  * End-to-end testing
+  * Performance testing
+
+## Risk Management
+- Technical Debt
+  * Identification
+  * Prioritization
+  * Resolution planning
+  * Prevention strategies
+- Security Risks
+  * Vulnerability assessment
+  * Security reviews
+  * Compliance checks
+  * Incident response
+
+## Decision Making
+- Technology Choices
+  * Framework selection
+  * Tool evaluation
+  * Library assessment
+  * Platform decisions
+- Trade-offs
+  * Performance vs maintainability
+  * Speed vs quality
+  * Cost vs features
+  * Risk vs reward
+
+## Continuous Improvement
+- Process Optimization
+  * Workflow improvements
+  * Tool automation
+  * Documentation updates
+  * Knowledge sharing
+- Team Growth
+  * Skill development
+  * Best practices
+  * Code reviews
+  * Mentoring

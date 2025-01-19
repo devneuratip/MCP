@@ -1,0 +1,38 @@
+{
+  "contextMapping": {
+    "backend": ["backend-agent", "code-reviewer"],
+    "frontend": ["frontend-agent", "designer-agent", "code-reviewer"],
+    "design": ["designer-agent", "frontend-agent"],
+    "deployment": ["infrastructure-agent", "code-reviewer"],
+    "architecture": ["lead-agent", "infrastructure-agent"],
+    "quality": ["code-reviewer", "lead-agent"],
+    "documentation": ["rag-specialist", "lead-agent"],
+    "optimization": ["learning-agent", "infrastructure-agent"],
+    "security": ["code-reviewer", "infrastructure-agent"],
+    "planning": ["lead-agent", "rag-specialist"],
+    "analytics": ["learning-agent", "lead-agent"],
+    "database": ["backend-agent", "infrastructure-agent"],
+    "api": ["backend-agent", "code-reviewer"],
+    "ui": ["frontend-agent", "designer-agent"],
+    "ux": ["designer-agent", "frontend-agent"],
+    "devops": ["infrastructure-agent", "lead-agent"],
+    "testing": ["code-reviewer", "backend-agent", "frontend-agent"],
+    "knowledge": ["rag-specialist", "learning-agent"],
+    "coordination": ["lead-agent"]
+  },
+  "priorityRules": {
+    "default": "lead-agent",
+    "security": "code-reviewer",
+    "deployment": "infrastructure-agent",
+    "design": "designer-agent"
+  },
+  "fallbackRules": {
+    "backend-agent": "lead-agent",
+    "frontend-agent": "lead-agent",
+    "designer-agent": "frontend-agent",
+    "infrastructure-agent": "lead-agent",
+    "code-reviewer": "lead-agent",
+    "learning-agent": "lead-agent",
+    "rag-specialist": "lead-agent"
+  }
+}
