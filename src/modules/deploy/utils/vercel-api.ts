@@ -1,13 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { readFile, readdir } from 'fs/promises';
 import { join, relative } from 'path';
-import { DeployArgs } from '../types.js';
-
-interface DeployResult {
-    url?: string;
-    deploymentId?: string;
-    error?: string;
-}
+import { DeployConfig, DeployResult } from '../providers/interface.js';
 
 export class VercelAPI {
     private token: string;
@@ -47,7 +41,7 @@ export class VercelAPI {
         return formData;
     }
 
-    async createDeployment(options: DeployArgs): Promise<DeployResult> {
+    async createDeployment(options: DeployConfig): Promise<DeployResult> {
         try {
             // Primeiro, crie o projeto se ele não existir
             const projectResponse = await axios.post(`${this.baseURL}/v9/projects`, {
